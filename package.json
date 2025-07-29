@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --enable-logging",
-    "build": "electron-builder --config package-build.json",
+    "build": "electron-builder --config package-build.json -wl",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
