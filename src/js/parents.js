@@ -1,3 +1,4 @@
+// ...existing code...
 document.getElementById('pin-input').oninput = function() {
     const val = this.value.trim();
     if (/^\d{4}$/.test(val)) {
@@ -92,7 +93,6 @@ document.getElementById('whitelist-add-btn').onclick = function() {
     input.value = '';
     error.textContent = '';
 };
-
 // Enter auf #whitelist-add triggert Hinzufügen-Button
 const whitelistAddInput = document.getElementById('whitelist-add');
 const whitelistAddBtn = document.getElementById('whitelist-add-btn');
@@ -104,3 +104,4 @@ if (whitelistAddInput && whitelistAddBtn) {
         }
     });
 }
+// ...existing code...

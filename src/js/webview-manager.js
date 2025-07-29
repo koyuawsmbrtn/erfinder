@@ -76,10 +76,24 @@ class WebViewManager {
             url = 'https://' + url;
         }
         
+        // Whitelist-Check
+        if (window.WhitelistManager && window.WhitelistManager.isWhitelisted(url)) {
+            const activeTab = window.tabManager.getActiveTab();
+            if (activeTab) {
+                this.navigateToUrlDirectly(url, activeTab);
+                window.uiManager.hideBlockedMessage(activeTab.id);
+                window.uiManager.updateSecurity(true);
+                const urlInput = document.getElementById('urlInput');
+                if (urlInput) {
+                    urlInput.blur();
+                    urlInput.setSelectionRange(0, 0);
+                }
+            }
+            return;
+        }
         const activeTab = window.tabManager.getActiveTab();
         if (activeTab) {
             await this.checkAndNavigate(url, activeTab);
-            // Nach Seitenaufruf: Fokus und Markierung entfernen
             const urlInput = document.getElementById('urlInput');
             if (urlInput) {
                 urlInput.blur();

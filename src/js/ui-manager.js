@@ -54,8 +54,71 @@ class UIManager {
                 blockedContent.appendChild(searchButton);
             }
             
+            // Whitelist-Button
+            if (url && window.WhitelistManager && window.WhitelistManager.addToWhitelist) {
+                const whitelistButton = document.createElement('button');
+                whitelistButton.textContent = '🔓 Website zur Whitelist hinzufügen';
+                whitelistButton.style.background = '#fff';
+                whitelistButton.style.color = '#444';
+                whitelistButton.style.border = '1px solid #ddd';
+                whitelistButton.style.boxShadow = '0 1px 4px #0001';
+                whitelistButton.style.borderRadius = '8px';
+                whitelistButton.style.fontWeight = 'bold';
+                whitelistButton.style.padding = '8px 24px';
+                whitelistButton.style.marginLeft = '10px';
+                whitelistButton.style.marginTop = '10px';
+                whitelistButton.onclick = () => {
+                    this.showPinModal(url, targetTabId);
+                };
+                blockedContent.appendChild(whitelistButton);
+            }
             tab.blockedMessage.classList.add('visible');
         }
+    }
+
+    showPinModal(url, tabId, opts = {}) {
+        const modal = document.getElementById('pinModal');
+        const pinInput = document.getElementById('pinInput');
+        const pinCancelBtn = document.getElementById('pinCancelBtn');
+        const pinError = document.getElementById('pinError');
+        const pinModalText = document.getElementById('pinModalText');
+        modal.style.display = 'flex';
+        pinInput.value = '';
+        pinError.style.display = 'none';
+        pinInput.focus();
+        if (opts.text) pinModalText.textContent = opts.text;
+        let submitted = false;
+        // Autosubmit bei 4 Stellen
+        pinInput.oninput = () => {
+            if (pinInput.value.length === 4 && !submitted) {
+                submitted = true;
+                submitHandler(tabId, url);
+            } else {
+                pinError.style.display = 'none';
+            }
+        };
+        // Submit-Handler
+        function submitHandler(tabId = null, url = null) {
+            const pin = pinInput.value;
+            if (window.PinManager && window.PinManager.checkPin && window.PinManager.checkPin(pin)) {
+                window.WhitelistManager.addToWhitelist(url);
+                modal.style.display = 'none';
+                window.uiManager.hideBlockedMessage(tabId);
+                window.webviewManager.navigateToUrl(url);
+                if (opts && opts.onSuccess) {
+                    opts.onSuccess();
+                }
+            } else {
+                pinError.style.display = 'block';
+                pinInput.value = '';
+                pinInput.focus();
+                submitted = false;
+            }
+        }
+        // Abbrechen-Button bleibt immer
+        pinCancelBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
     }
     
     hideBlockedMessage(tabId = null) {

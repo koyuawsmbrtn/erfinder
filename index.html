@@ -43,6 +43,18 @@
     </div>
 
     <!-- Content Area -->
+    <!-- PIN Modal -->
+    <div id="pinModal" class="pin-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0006;z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:32px 24px;border-radius:16px;box-shadow:0 2px 16px #0002;max-width:320px;margin:auto;text-align:center;">
+            <h2 style="margin-bottom:16px;">🔒 Eltern-PIN</h2>
+            <p id="pinModalText" style="margin-bottom:16px;">Bitte gib die 4-stellige Eltern-PIN ein:</p>
+            <input id="pinInput" type="password" maxlength="4" pattern="[0-9]*" inputmode="numeric" style="font-size:2em;text-align:center;width:100px;letter-spacing:12px;padding:8px;margin-bottom:16px;" autofocus>
+            <div>
+                <button id="pinCancelBtn" style="background:#eee;color:#444;font-weight:bold;padding:8px 24px;border:none;border-radius:8px;">Abbrechen</button>
+            </div>
+            <div id="pinError" style="color:#f44336;margin-top:12px;display:none;">Falsche PIN!</div>
+        </div>
+    </div>
     <div class="content-area">
         <!-- Initial Tab Container -->
         <div class="webview-container" id="webview-container-0" data-tab-id="0">
