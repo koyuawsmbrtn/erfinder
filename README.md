@@ -16,24 +16,24 @@ Ein sicherer Electron-basierter Browser für Kinder mit integriertem Content-Fil
 1. Repository klonen oder Dateien herunterladen
 2. Dependencies installieren:
    ```bash
-   npm install
+   bun install
    ```
 
 ## Verwendung
 
 ### Entwicklung starten
 ```bash
-npm run dev
+bun run dev
 ```
 
 ### Produktionsversion starten
 ```bash
-npm start
+bun start
 ```
 
 ### Build erstellen
 ```bash
-npm run build
+bun run build
 ```
 
 ## Technische Details
@@ -57,18 +57,6 @@ Der Browser verwendet das mitgelieferte Bash-Skript als Basis für einen JavaScr
 - URL-Validierung und -Normalisierung
 - Download-Progress-Tracking
 - Responsive Design
-
-## Projektstruktur
-
-```
-erfinder/
-├── main.js           # Haupt-Electron-Prozess
-├── index.html        # Browser-UI
-├── package.json      # NPM-Konfiguration
-├── .github/
-│   └── copilot-instructions.md
-└── README.md         # Diese Datei
-```
 
 ## Abhängigkeiten
 
