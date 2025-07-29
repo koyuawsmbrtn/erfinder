@@ -1,0 +1,79 @@
+/* Tab System Styles */
+
+.tab-bar {
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    min-height: 40px;
+    overflow-x: auto;
+}
+
+.tab {
+    background: #e9ecef;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 12px;
+    margin-right: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 200px;
+    min-width: 120px;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.tab:hover {
+    background: #dee2e6;
+}
+
+.tab.active {
+    background: white;
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
+}
+
+.tab-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+.tab-close {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    color: #666;
+    transition: background-color 0.2s;
+}
+
+.tab-close:hover {
+    background: #f8f9fa;
+    color: #333;
+}
+
+.new-tab-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+.new-tab-btn:hover {
+    background: #218838;
+}

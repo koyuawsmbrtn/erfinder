@@ -1,0 +1,60 @@
+{
+  "name": "erfinder",
+  "productName": "Erfinder",
+  "version": "1.0.0",
+  "description": "Ein sicherer Browser für Kinder mit integriertem Content-Filter",
+  "main": "main.js",
+  "homepage": "https://github.com/koyuawsmbrtn/erfinder",
+  "author": {
+    "name": "Erfinder Team",
+    "email": "support@koyu.space"
+  },
+  "build": {
+    "appId": "de.erfinder.app",
+    "productName": "Erfinder",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "linux": {
+      "target": "AppImage",
+      "category": "Network"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder",
+    "build-linux": "electron-builder --linux",
+    "build-windows": "electron-builder --windows",
+    "build-mac": "electron-builder --mac",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "browser",
+    "kinder",
+    "kindersicherung",
+    "fragfinn",
+    "child-safety",
+    "content-filter"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^37.2.4"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
+}

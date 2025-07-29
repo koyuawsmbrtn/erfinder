@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erfinder</title>
+    
+    <!-- CSS-Dateien -->
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/tabs.css">
+    <link rel="stylesheet" href="src/styles/webview.css">
+    <link rel="stylesheet" href="src/styles/downloads.css">
+    <link rel="stylesheet" href="src/styles/ui.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="top-bar">
+        <div class="nav-buttons">
+            <button class="nav-btn" id="backBtn" title="Zurück">←</button>
+            <button class="nav-btn" id="forwardBtn" title="Vorwärts">→</button>
+            <button class="nav-btn" id="reloadBtn" title="Neu laden">↻</button>
+        </div>
+        
+        <div class="url-container">
+            <input type="text" class="url-input" id="urlInput" placeholder="Gib eine kinderfreundliche Webseite ein...">
+            <button class="go-btn" id="goBtn" title="Los!">→</button>
+        </div>
+        
+        <button class="home-btn" id="homeBtn">🏠 Startseite</button>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar" id="tabBar">
+        <div class="tab active" id="tab-0" data-tab-id="0">
+            <span class="tab-title">FragFinn</span>
+            <button class="tab-close" onclick="closeTab(0)">×</button>
+        </div>
+        <button class="new-tab-btn" id="newTabBtn" title="Neuer Tab">+</button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Initial Tab Container -->
+        <div class="webview-container" id="webview-container-0" data-tab-id="0">
+            <webview class="webview" id="webview-0" src="https://www.fragfinn.de" partition="persist:main" allowpopups></webview>
+            
+            <div class="loading" id="loading-0">
+                <div class="spinner"></div>
+            </div>
+            
+            <div class="blocked-message" id="blockedMessage-0">
+                <div class="blocked-content">
+                    <h2>🚫 Webseite blockiert</h2>
+                    <p class="blocked-message-text">Diese Webseite ist für Kinder nicht geeignet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Manager -->
+        <div class="download-manager" id="downloadManager">
+            <div class="download-header">
+                <span>📥 Downloads</span>
+                <button onclick="toggleDownloadManager()">×</button>
+            </div>
+            <div id="downloadList"></div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="security-indicator">
+            <div class="security-icon" id="securityIcon"></div>
+            <span id="securityText">Sicher</span>
+        </div>
+        <div id="statusText">Bereit</div>
+    </div>
+
+    <!-- JavaScript Module -->
+    <script src="src/js/erfinder-combined.js"></script>
+</body>
+</html>

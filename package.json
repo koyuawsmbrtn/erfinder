@@ -1,0 +1,27 @@
+{
+  "name": "erfinder",
+  "version": "1.0.0",
+  "description": "Ein sicherer Browser für Kinder mit integriertem Content-Filter",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "browser",
+    "kinder",
+    "kindersicherung",
+    "fragfinn"
+  ],
+  "author": "Erfinder Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^37.2.4"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
+}
