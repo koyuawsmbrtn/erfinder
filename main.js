@@ -81,7 +81,7 @@ function createWindow() {
       webSecurity: true,
       webviewTag: true,
     },
-    icon: path.join(__dirname, 'assets/icon.png') // Optional: Icon hinzufügen
+    icon: path.join(__dirname, 'assets/icon.png')
   });
 
   // Content-Filter wird im Renderer-Prozess gehandhabt
