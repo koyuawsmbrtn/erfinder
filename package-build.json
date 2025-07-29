@@ -7,6 +7,8 @@
   "files": [
     "main.js",
     "index.html",
+    "parents.html",
+    "parents.js",
     "package.json",
     "node_modules/**/*",
     "assets/**/*",

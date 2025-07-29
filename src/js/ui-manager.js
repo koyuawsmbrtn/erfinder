@@ -20,7 +20,7 @@ class UIManager {
         }
     }
     
-    showBlockedMessage(message, tabId = null, searchSuggestion = null) {
+    showBlockedMessage(message, tabId = null, searchSuggestion = null, url = null) {
         const targetTabId = tabId || window.tabManager.activeTabId;
         const tab = window.tabManager.tabs[targetTabId];
         if (tab) {

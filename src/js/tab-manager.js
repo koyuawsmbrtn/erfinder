@@ -35,14 +35,25 @@ class TabManager {
             blockedMessage: document.getElementById('blockedMessage-0'),
             container: document.getElementById('webview-container-0')
         };
-        
+        // Tab-Titel und Favicon dynamisch setzen
+        const tabFavicon = document.getElementById('tab-favicon-0');
+        const tabTitle = document.querySelector('#tab-0 .tab-title');
+        this.tabs[0].webview.addEventListener('page-favicon-updated', (e) => {
+            if (e.favicons && e.favicons.length > 0) {
+                tabFavicon.src = e.favicons[0];
+            }
+        });
+        this.tabs[0].webview.addEventListener('page-title-updated', (e) => {
+            if (tabTitle && e.title) {
+                tabTitle.textContent = e.title.length > 20 ? e.title.substring(0, 20) + '...' : e.title;
+            }
+        });
         // Event-Listener für ersten Tab hinzufügen
         document.getElementById('tab-0').addEventListener('click', (e) => {
             if (!e.target.classList.contains('tab-close')) {
                 this.switchToTab(0);
             }
         });
-        
         window.webviewManager.setupWebviewEvents(this.tabs[0]);
         this.switchToTab(0);
     }
@@ -56,6 +67,7 @@ class TabManager {
         tabElement.id = `tab-${tabId}`;
         tabElement.dataset.tabId = tabId;
         tabElement.innerHTML = `
+            <img class="tab-favicon" id="tab-favicon-${tabId}" src="assets/icon.png" width="16" height="16" alt="Favicon" style="vertical-align:middle;margin-right:4px;">
             <span class="tab-title">${title}</span>
             <button class="tab-close" onclick="window.tabManager.closeTab(${tabId})">×</button>
         `;
@@ -82,7 +94,7 @@ class TabManager {
             <div class="blocked-message" id="blockedMessage-${tabId}">
                 <div class="blocked-content">
                     <h2>🚫 Webseite blockiert</h2>
-                    <p class="blocked-message-text">Diese Webseite ist für Kinder nicht geeignet.</p>
+                    <p class="blocked-message-text">Diese Webseite ist für Kinder nicht geeignet. Frage deine Eltern wenn du sie freischalten möchtest.</p>
                 </div>
             </div>
         `;
@@ -103,6 +115,20 @@ class TabManager {
         
         this.tabs[tabId] = tab;
         window.webviewManager.setupWebviewEvents(tab);
+        // Favicon- und Titel-Update Event immer setzen
+        setTimeout(() => {
+            tab.webview.addEventListener('page-favicon-updated', (e) => {
+                if (e.favicons && e.favicons.length > 0) {
+                    document.getElementById(`tab-favicon-${tabId}`).src = e.favicons[0];
+                }
+            });
+            tab.webview.addEventListener('page-title-updated', (e) => {
+                const titleElement = document.querySelector(`#tab-${tabId} .tab-title`);
+                if (titleElement && e.title) {
+                    titleElement.textContent = e.title.length > 20 ? e.title.substring(0, 20) + '...' : e.title;
+                }
+            });
+        }, 0);
         
         // Zum neuen Tab wechseln
         this.switchToTab(tabId);
@@ -167,9 +193,12 @@ class TabManager {
     updateTabTitle(tabId, title) {
         const tab = this.tabs[tabId];
         if (tab) {
+        // Fokussiere und markiere das Eingabefeld beim Tab-Wechsel
+        this.urlInput.focus();
+        this.urlInput.select();
             tab.title = title;
             const titleElement = document.querySelector(`#tab-${tabId} .tab-title`);
-            if (titleElement) {
+            if (titleElement && title) {
                 titleElement.textContent = title.length > 20 ? title.substring(0, 20) + '...' : title;
             }
         }

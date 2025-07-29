@@ -98,3 +98,14 @@ body {
 .home-btn:hover {
     background: #fdd835;
 }
+
+.parent-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}

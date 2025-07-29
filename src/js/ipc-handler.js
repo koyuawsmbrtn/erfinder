@@ -14,7 +14,7 @@ class IPCHandler {
     setupEventListeners() {
         // URL-Block Events
         this.ipcRenderer.on('url-blocked', (event, url) => {
-            window.uiManager.showBlockedMessage(`Die Webseite "${url}" ist für Kinder nicht geeignet.`);
+            window.uiManager.showBlockedMessage(`Die Webseite "${url}" ist für Kinder nicht geeignet.`, null, null, url);
             window.uiManager.updateSecurity(false);
         });
 

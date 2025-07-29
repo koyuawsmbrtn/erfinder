@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Elternbereich</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 440px; margin: 60px auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px #0002; padding: 32px; text-align: center; }
+        h2 { color: #2196F3; margin-bottom: 24px; }
+        input[type="password"] { font-size: 2em; text-align: center; width: 120px; letter-spacing: 12px; padding: 8px 0; border-radius: 8px; border: 2px solid #2196F3; outline: none; margin-bottom: 16px; }
+        .error { color: #f44336; margin-bottom: 12px; min-height: 24px; }
+        button { font-size: 1.2em; padding: 10px 32px; background: #2196F3; color: #fff; border: none; border-radius: 8px; cursor: pointer; margin-top: 12px; }
+        button:disabled { background: #bbb; }
+        .success { color: #4CAF50; margin-top: 18px; font-size: 1.1em; }
+        .whitelist { margin-top: 32px; text-align: left; }
+        .whitelist h3 { color: #2196F3; }
+        .whitelist-list { margin: 0; padding: 0; list-style: none; }
+        .whitelist-list li { padding: 6px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .whitelist-list button { background: #f44336; color: #fff; font-size: 0.9em; padding: 4px 12px; border-radius: 6px; margin-left: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Elternbereich</h2>
+        <div id="step-pin">
+            <p>Bitte geben Sie Ihre aktuelle Eltern-PIN ein:</p>
+            <input id="pin-input" type="password" maxlength="4" pattern="\d{4}" autofocus>
+            <div class="error" id="pin-error"></div>
+            <button id="pin-check">Weiter</button>
+        </div>
+        <div id="step-main" style="display:none;">
+            <div>
+                <p>Neue 4-stellige PIN eingeben:</p>
+                <input id="pin-new" type="password" maxlength="4" pattern="\d{4}">
+                <div class="error" id="pin-new-error"></div>
+                <button id="pin-save">PIN speichern</button>
+            </div>
+            <div class="success" id="success-msg" style="display:none;"></div>
+            <div class="whitelist">
+                <h3>Whitelist verwalten</h3>
+                <ul class="whitelist-list" id="whitelist-list"></ul>
+                <input id="whitelist-add" type="text" placeholder="URL hinzufügen..." style="width:70%;margin-top:10px;">
+                <button id="whitelist-add-btn">Hinzufügen</button>
+                <div class="error" id="whitelist-error"></div>
+            </div>
+        </div>
+    </div>
+    <script src="parents.js"></script>
+</body>
+</html>

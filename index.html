@@ -27,11 +27,15 @@
         </div>
         
         <button class="home-btn" id="homeBtn">🏠 Startseite</button>
+        <button id="parent-btn" title="Elternbereich" class="parent-btn">
+            <span style="font-size:1.3em; vertical-align:middle;">🔒</span> Elternbereich
+        </button>
     </div>
 
     <!-- Tab Bar -->
     <div class="tab-bar" id="tabBar">
         <div class="tab active" id="tab-0" data-tab-id="0">
+            <img class="tab-favicon" id="tab-favicon-0" src="assets/icon.png" width="16" height="16" style="vertical-align:middle;margin-right:4px;">
             <span class="tab-title">FragFinn</span>
             <button class="tab-close" onclick="closeTab(0)">×</button>
         </div>
@@ -51,7 +55,7 @@
             <div class="blocked-message" id="blockedMessage-0">
                 <div class="blocked-content">
                     <h2>🚫 Webseite blockiert</h2>
-                    <p class="blocked-message-text">Diese Webseite ist für Kinder nicht geeignet.</p>
+                    <p class="blocked-message-text">Diese Webseite ist für Kinder nicht geeignet. Frage deine Eltern wenn du sie freischalten möchtest.</p>
                 </div>
             </div>
         </div>
@@ -76,6 +80,19 @@
     </div>
 
     <!-- JavaScript Module -->
-    <script src="src/js/erfinder-combined.js"></script>
+    <script src="src/js/pin.js"></script>
+    <script src="src/js/whitelist.js"></script>
+    <script src="src/js/tab-manager.js"></script>
+    <script src="src/js/ipc-handler.js"></script>
+    <script src="src/js/webview-manager.js"></script>
+    <script src="src/js/navigation-manager.js"></script>
+    <script src="src/js/ui-manager.js"></script>
+    <script src="src/js/main-app.js"></script>
+    <script>
+    document.getElementById('parent-btn').onclick = function() {
+        // Elternbereich in großem neuen Fenster öffnen
+        window.open('parents.html', '_blank', 'width=800,height=700,menubar=no,toolbar=no,location=no,status=no');
+    };
+    </script>
 </body>
 </html>

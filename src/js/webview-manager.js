@@ -79,6 +79,12 @@ class WebViewManager {
         const activeTab = window.tabManager.getActiveTab();
         if (activeTab) {
             await this.checkAndNavigate(url, activeTab);
+            // Nach Seitenaufruf: Fokus und Markierung entfernen
+            const urlInput = document.getElementById('urlInput');
+            if (urlInput) {
+                urlInput.blur();
+                urlInput.setSelectionRange(0, 0);
+            }
         }
     }
     
@@ -115,7 +121,7 @@ class WebViewManager {
                     message += '\n\nMöchtest du stattdessen auf FragFinn suchen?';
                 }
                 
-                window.uiManager.showBlockedMessage(message, tab.id, reachabilityResult.searchSuggestion);
+                window.uiManager.showBlockedMessage(message, tab.id, reachabilityResult.searchSuggestion, url);
                 window.uiManager.updateSecurity(false);
                 window.uiManager.showLoading(false, tab.id);
                 return;
@@ -133,13 +139,13 @@ class WebViewManager {
                 window.uiManager.updateSecurity(true);
             } else {
                 console.log('URL blocked');
-                window.uiManager.showBlockedMessage(result.message, tab.id);
+                window.uiManager.showBlockedMessage(result.message, tab.id, result.searchSuggestion, url);
                 window.uiManager.updateSecurity(false);
                 window.uiManager.showLoading(false, tab.id);
             }
         } catch (error) {
             console.error('Navigation error:', error);
-            window.uiManager.showBlockedMessage('Fehler beim Laden der Webseite.', tab.id);
+            window.uiManager.showBlockedMessage('Fehler beim Laden der Webseite.', tab.id, null, url);
             window.uiManager.updateSecurity(false);
             window.uiManager.showLoading(false, tab.id);
         } finally {

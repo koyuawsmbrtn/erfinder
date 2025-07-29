@@ -13,6 +13,10 @@ class ContentFilter {
   }
 
   async checkUrl(url) {
+    // Session-Whitelist aus globalem Speicher prüfen
+    if (global.sessionWhitelist && global.sessionWhitelist.has(url)) {
+      return 'whitelist';
+    }
     try {
       // Cache prüfen
       const cached = this.cache.get(url);
@@ -68,6 +72,7 @@ class ContentFilter {
   }
 }
 
+global.sessionWhitelist = new Set();
 const contentFilter = new ContentFilter();
 
 function createWindow() {
@@ -174,15 +179,22 @@ function createWindow() {
     // will-navigate für alle Navigation abfangen und durch Content-Filter leiten
     webContents.on('will-navigate', (event, navigationUrl) => {
       console.log('WebView', webViewId, 'will-navigate:', navigationUrl, 'from:', webContents.getURL());
-      
+
       const currentUrl = webContents.getURL();
-      
+
       // Initiale Navigation erlauben (about:blank -> erste URL)
       if (!currentUrl || currentUrl === 'about:blank') {
         console.log('WebView', webViewId, 'allowing initial navigation');
         return;
       }
-      
+
+      // Prüfe sessionWhitelist direkt
+      if (global.sessionWhitelist && global.sessionWhitelist.has(navigationUrl)) {
+        console.log('WebView', webViewId, 'navigation allowed by sessionWhitelist:', navigationUrl);
+        // Erlaubt: WebView navigieren lassen
+        return; // Navigation nicht verhindern
+      }
+
       // Alle weiteren Navigationen abfangen
       console.log('WebView', webViewId, 'intercepting navigation for filtering');
       event.preventDefault();
@@ -195,11 +207,11 @@ function createWindow() {
         } else {
           // Blockiert: Kindgerechte Fehlermeldung anzeigen
           if (mainWindow && !mainWindow.isDestroyed()) {
-        webContents.send('navigation-blocked', {
-          webViewId,
-          url: navigationUrl,
-          message: 'Diese Webseite ist für Kinder nicht geeignet.'
-        });
+            webContents.send('navigation-blocked', {
+              webViewId,
+              url: navigationUrl,
+              message: 'Diese Webseite ist für Kinder nicht geeignet. Frage deine Eltern wenn du sie freischalten möchtest.'
+            });
           }
           console.log('WebView', webViewId, 'navigation blocked by filter:', navigationUrl);
         }
@@ -207,9 +219,9 @@ function createWindow() {
         // Fehler beim Filter: Im Zweifel blockieren
         if (mainWindow && !mainWindow.isDestroyed()) {
           webContents.send('navigation-blocked', {
-        webViewId,
-        url: navigationUrl,
-        message: 'Fehler beim Überprüfen der Webseite.'
+            webViewId,
+            url: navigationUrl,
+            message: 'Fehler beim Überprüfen der Webseite.'
           });
         }
         console.error('WebView', webViewId, 'navigation blocked due to filter error:', error);
@@ -292,11 +304,19 @@ ipcMain.handle('check-url-reachability', async (event, url) => {
 // IPC-Handler für URL-Check (wird vom Renderer vor Navigation aufgerufen)
 ipcMain.handle('check-url', async (event, url) => {
   try {
+    // Prüfe ob URL in sessionWhitelist ist (vom Renderer via IPC gesetzt)
+    if (global.sessionWhitelist && global.sessionWhitelist.has(url)) {
+      return {
+        allowed: true,
+        url: url,
+        message: null
+      };
+    }
     const result = await contentFilter.checkUrl(url);
     return {
       allowed: result === 'whitelist',
       url: url,
-      message: result === 'blacklist' ? 'Diese Webseite ist für Kinder nicht geeignet.' : null
+      message: result === 'blacklist' ? 'Diese Webseite ist für Kinder nicht geeignet. Frage deine Eltern wenn du sie freischalten möchtest.' : null
     };
   } catch (error) {
     console.error('Fehler beim URL-Check:', error);
@@ -306,6 +326,13 @@ ipcMain.handle('check-url', async (event, url) => {
       message: 'Fehler beim Überprüfen der Webseite.'
     };
   }
+});
+
+// IPC-Handler für das Whitelisten von URLs
+ipcMain.handle('whitelist-session-url', (event, url) => {
+  if (!global.sessionWhitelist) global.sessionWhitelist = new Set();
+  global.sessionWhitelist.add(url);
+  return { success: true };
 });
 
 // IPC-Handler für URL-Navigation
@@ -322,7 +349,7 @@ ipcMain.handle('navigate-to-url', async (event, url) => {
     return {
       allowed: result === 'whitelist',
       url: url,
-      message: result === 'blacklist' ? 'Diese Webseite ist für Kinder nicht geeignet.' : null
+      message: result === 'blacklist' ? 'Diese Webseite ist für Kinder nicht geeignet. Frage deine Eltern wenn du sie freischalten möchtest.' : null
     };
   } catch (error) {
     return {
