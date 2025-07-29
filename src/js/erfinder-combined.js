@@ -45,9 +45,16 @@ class TabManager {
     }
     
     createNewTab(url = 'https://www.fragfinn.de', title = 'Neuer Tab') {
+        // Sicherheitsprüfung: Doppelte Tabs verhindern
+        const existingTab = Object.values(this.tabs).find(tab => tab && tab.url === url);
+        if (existingTab) {
+            console.log('TabManager: Tab mit URL existiert bereits, wechsle zu Tab', existingTab.id);
+            this.switchToTab(existingTab.id);
+            return existingTab.id;
+        }
         console.log('TabManager: Creating new tab with URL:', url, 'Title:', title);
         const tabId = this.nextTabId++;
-        
+        // ...existing code...
         const tabElement = document.createElement('div');
         tabElement.className = 'tab';
         tabElement.id = `tab-${tabId}`;
@@ -61,9 +68,7 @@ class TabManager {
                 this.switchToTab(tabId);
             }
         });
-        
         this.tabBar.insertBefore(tabElement, this.newTabBtn);
-        
         const container = document.createElement('div');
         container.className = 'webview-container';
         container.id = `webview-container-${tabId}`;
@@ -81,9 +86,7 @@ class TabManager {
                 </div>
             </div>
         `;
-        
         document.querySelector('.content-area').appendChild(container);
-        
         const tab = {
             id: tabId,
             title: title,
@@ -94,11 +97,9 @@ class TabManager {
             blockedMessage: document.getElementById(`blockedMessage-${tabId}`),
             container: container
         };
-        
         this.tabs[tabId] = tab;
         window.webviewManager.setupWebviewEvents(tab);
         this.switchToTab(tabId);
-        
         return tabId;
     }
     
