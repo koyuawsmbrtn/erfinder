@@ -60,6 +60,7 @@ class TabManager {
         tabElement.id = `tab-${tabId}`;
         tabElement.dataset.tabId = tabId;
         tabElement.innerHTML = `
+            <img class="tab-favicon" id="tab-favicon-${tabId}" src="assets/icon.png" width="16" height="16" style="vertical-align:middle;margin-right:4px;">
             <span class="tab-title">${title}</span>
             <button class="tab-close" onclick="window.tabManager.closeTab(${tabId})">×</button>
         `;
@@ -99,6 +100,12 @@ class TabManager {
         };
         this.tabs[tabId] = tab;
         window.webviewManager.setupWebviewEvents(tab);
+        // Favicon-Update Event
+        tab.webview.addEventListener('page-favicon-updated', (e) => {
+            if (e.favicons && e.favicons.length > 0) {
+                document.getElementById(`tab-favicon-${tabId}`).src = e.favicons[0];
+            }
+        });
         this.switchToTab(tabId);
         return tabId;
     }
