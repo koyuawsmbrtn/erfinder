@@ -67,7 +67,7 @@ class TabManager {
         tabElement.id = `tab-${tabId}`;
         tabElement.dataset.tabId = tabId;
         tabElement.innerHTML = `
-            <img class="tab-favicon" id="tab-favicon-${tabId}" src="assets/icon.png" width="16" height="16" alt="Favicon" style="vertical-align:middle;margin-right:4px;">
+            <img class="tab-favicon" id="tab-favicon-${tabId}" src="assets/globe.svg" width="16" height="16" alt="Favicon" style="vertical-align:middle;margin-right:4px;">
             <span class="tab-title">${title}</span>
             <button class="tab-close" onclick="window.tabManager.closeTab(${tabId})">×</button>
         `;
