@@ -129,6 +129,16 @@ class IPCHandler {
             }
         });
     }
+    
+    // IPC invoke wrapper für bessere Fehlerbehandlung
+    async invoke(channel, ...args) {
+        try {
+            return await this.ipcRenderer.invoke(channel, ...args);
+        } catch (error) {
+            console.error(`IPC invoke error on channel ${channel}:`, error);
+            throw error;
+        }
+    }
 }
 
 // Global verfügbar machen

@@ -101,9 +101,36 @@
     <script src="src/js/ui-manager.js"></script>
     <script src="src/js/main-app.js"></script>
     <script>
-    document.getElementById('parent-btn').onclick = function() {
-        // Elternbereich in großem neuen Fenster öffnen
-        window.open('parents.html', '_blank', 'width=800,height=700,menubar=no,toolbar=no,location=no,status=no');
+    document.getElementById('parent-btn').onclick = async function() {
+        // Erstkonfiguration prüfen
+        const firstRunCompleted = localStorage.getItem('firstRunCompleted');
+        const parentalPin = localStorage.getItem('parentalPin');
+        
+        if (!firstRunCompleted || !parentalPin) {
+            // First-run wizard über IPC öffnen für bessere Integration
+            try {
+                const result = await window.ipcHandler.invoke('show-first-run-wizard');
+                if (!result.success) {
+                    console.error('Fehler beim Öffnen des Einrichtungsassistenten:', result.error);
+                }
+            } catch (error) {
+                console.error('IPC-Fehler beim Öffnen des Einrichtungsassistenten:', error);
+                // Fallback zu window.open
+                window.open('first-run-wizard.html', '_blank', 'width=700,height=600,menubar=no,toolbar=no,location=no,status=no,resizable=no');
+            }
+        } else {
+            // Elternbereich über IPC öffnen für bessere Integration
+            try {
+                const result = await window.ipcHandler.invoke('show-parent-area');
+                if (!result.success) {
+                    console.error('Fehler beim Öffnen des Elternbereichs:', result.error);
+                }
+            } catch (error) {
+                console.error('IPC-Fehler beim Öffnen des Elternbereichs:', error);
+                // Fallback zu window.open
+                window.open('parents.html', '_blank', 'width=800,height=700,menubar=no,toolbar=no,location=no,status=no');
+            }
+        }
     };
     </script>
 </body>

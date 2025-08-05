@@ -8,6 +8,7 @@
     "main.js",
     "index.html",
     "parents.html",
+    "first-run-wizard.html",
     "package.json",
     "node_modules/**/*",
     "assets/**/*",

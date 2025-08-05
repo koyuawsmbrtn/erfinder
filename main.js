@@ -75,6 +75,88 @@ class ContentFilter {
 global.sessionWhitelist = new Set();
 const contentFilter = new ContentFilter();
 
+// Funktion zum Prüfen der Erstkonfiguration
+function checkFirstRun() {
+  // Prüfen ob localStorage Daten vorhanden sind (über temporäres Fenster)
+  return new Promise((resolve) => {
+    const tempWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      }
+    });
+
+    tempWindow.loadFile('index.html').then(() => {
+      tempWindow.webContents.executeJavaScript(`
+        const firstRunCompleted = localStorage.getItem('firstRunCompleted');
+        const parentalPin = localStorage.getItem('parentalPin');
+        console.log('First run check - firstRunCompleted:', firstRunCompleted, 'parentalPin:', parentalPin);
+        (!firstRunCompleted || !parentalPin)
+      `).then((isFirstRun) => {
+        console.log('First run check result:', isFirstRun);
+        tempWindow.close();
+        resolve(isFirstRun);
+      }).catch((error) => {
+        console.error('Error executing first run check:', error);
+        tempWindow.close();
+        resolve(true); // Im Zweifelsfall als first run behandeln
+      });
+    }).catch((error) => {
+      console.error('Error loading temp window for first run check:', error);
+      tempWindow.close();
+      resolve(true); // Im Zweifelsfall als first run behandeln
+    });
+  });
+}
+
+// Funktion zum Anzeigen des First-Run-Wizards
+function showFirstRunWizard() {
+  const wizardWindow = new BrowserWindow({
+    width: 900,
+    height: 850,
+    resizable: false,
+    modal: true,
+    parent: mainWindow,
+    center: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    },
+    icon: path.join(__dirname, 'assets/icon.png'),
+    title: 'Erfinder - Erstkonfiguration',
+    show: false, // Nicht sofort anzeigen für smoothe Animation
+    backgroundColor: '#667eea', // Hintergrundfarbe passend zum CSS
+    titleBarStyle: 'default'
+  });
+
+  wizardWindow.setMenu(null); // Menü ausblenden
+  wizardWindow.setMenuBarVisibility(false); // Menüleiste ausblenden
+
+  wizardWindow.loadFile('first-run-wizard.html');
+  
+  // Fenster smooth anzeigen, nachdem es geladen ist
+  wizardWindow.once('ready-to-show', () => {
+    wizardWindow.show();
+    if (process.platform === 'win32') {
+      wizardWindow.focus(); // Windows fokus fix
+    }
+  });
+  
+  // DevTools für Entwicklung (später entfernen)
+  // wizardWindow.webContents.openDevTools();
+
+  // Wizard-Fenster schließen Event abfangen
+  wizardWindow.on('closed', () => {
+    // Hauptfenster neu laden, damit neue Einstellungen wirksam werden
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.reload();
+    }
+  });
+
+  return wizardWindow;
+}
+
 function createWindow() {
   // Hauptfenster erstellen
   mainWindow = new BrowserWindow({
@@ -389,8 +471,66 @@ ipcMain.handle('navigate-webview', async (event, webViewId, url) => {
   }
 });
 
+// IPC-Handler für First-Run-Wizard
+ipcMain.handle('show-first-run-wizard', () => {
+  try {
+    showFirstRunWizard();
+    return { success: true };
+  } catch (error) {
+    console.error('Error showing first-run wizard:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// IPC-Handler für Elternbereich
+ipcMain.handle('show-parent-area', () => {
+  try {
+    const parentWindow = new BrowserWindow({
+      width: 800,
+      height: 700,
+      resizable: true,
+      modal: false,
+      parent: mainWindow,
+      center: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      },
+      icon: path.join(__dirname, 'assets/icon.png'),
+      title: 'Erfinder - Elternbereich',
+      show: false, // Nicht sofort anzeigen für smoothe Animation
+      backgroundColor: '#ffffff',
+      titleBarStyle: 'default'
+    });
+
+    parentWindow.setMenu(null);
+    parentWindow.setMenuBarVisibility(false);
+    parentWindow.loadFile('parents.html');
+    
+    // Fenster smooth anzeigen, nachdem es geladen ist
+    parentWindow.once('ready-to-show', () => {
+      parentWindow.show();
+      if (process.platform === 'win32') {
+        parentWindow.focus(); // Windows fokus fix
+      }
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error showing parent area:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// IPC-Handler für First-Run-Wizard Abschluss
+ipcMain.on('first-run-completed', () => {
+  console.log('First run wizard completed successfully');
+  // Hier können weitere Aktionen nach Abschluss des Setups ausgeführt werden
+});
+
 // Menü erstellen
 function createMenu() {
+  const packageJson = require(path.join(__dirname, 'package.json'));
   const template = [
     {
       label: 'Datei',
@@ -474,11 +614,12 @@ function createMenu() {
         {
           label: 'Über Erfinder',
           click: () => {
+            // Hole Versionsnummer und Beschreibung aus package.json
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: 'Über Erfinder',
-              message: 'Erfinder v1.0.0',
-              detail: 'Ein sicherer Browser für Kinder mit integriertem Content-Filter basierend auf fragfinn.de'
+              message: `Erfinder v${packageJson.version}`,
+              detail: packageJson.description || 'Ein sicherer Browser für Kinder mit integriertem Content-Filter basierend auf fragfinn.de'
             });
           }
         }
@@ -491,9 +632,20 @@ function createMenu() {
 }
 
 // App-Events
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
   createMenu();
+
+  // Erstkonfiguration prüfen und ggf. Wizard anzeigen
+  try {
+    const isFirstRun = await checkFirstRun();
+    if (isFirstRun) {
+      console.log('First run detected - showing wizard');
+      showFirstRunWizard();
+    }
+  } catch (error) {
+    console.error('Error checking first run:', error);
+  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

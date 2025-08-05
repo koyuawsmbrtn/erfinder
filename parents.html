@@ -2,33 +2,74 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Elternbereich</title>
+    <title>Erfinder - Elternbereich</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles/parents.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Elternbereich</h2>
-        <div id="step-pin">
-            <p>Bitte geben Sie Ihre aktuelle Eltern-PIN ein:</p>
-            <input id="pin-input" type="password" maxlength="4" pattern="\d{4}" autofocus>
-            <div class="error" id="pin-error"></div>
-            <button id="pin-check">Weiter</button>
-        </div>
-        <div id="step-main" style="display:none;">
-            <div>
-                <p>Neue 4-stellige PIN eingeben:</p>
-                <input id="pin-new" type="password" maxlength="4" pattern="\d{4}">
-                <div class="error" id="pin-new-error"></div>
-                <button id="pin-save">PIN speichern</button>
+    <div class="parent-container">
+        <!-- PIN-Eingabe Schritt -->
+        <div id="step-pin" class="parent-step active">
+            <div class="parent-content">
+                <div class="parent-icon">🔒</div>
+                <h1>Elternbereich</h1>
+                <h2>Sicherheitseinstellungen verwalten</h2>
+                <p>Bitte geben Sie Ihre 4-stellige Eltern-PIN ein, um auf die Einstellungen zuzugreifen.</p>
+                
+                <div class="pin-input-container">
+                    <label for="pin-input">Eltern-PIN eingeben:</label>
+                    <input id="pin-input" type="password" maxlength="4" pattern="\d{4}" placeholder="••••" autofocus>
+                </div>
+                
+                <div class="error" id="pin-error"></div>
+                
+                <button class="parent-btn primary" id="pin-check">Zugang gewähren</button>
             </div>
-            <div class="success" id="success-msg" style="display:none;"></div>
-            <div class="whitelist">
-                <h3>Whitelist verwalten</h3>
-                <ul class="whitelist-list" id="whitelist-list"></ul>
-                <input id="whitelist-add" type="text" placeholder="URL hinzufügen..." style="width:70%;margin-top:10px;">
-                <button id="whitelist-add-btn">Hinzufügen</button>
-                <div class="error" id="whitelist-error"></div>
+        </div>
+
+        <!-- Hauptbereich nach PIN-Eingabe -->
+        <div id="step-main" class="parent-step">
+            <div class="parent-content">
+                <div class="parent-icon">⚙️</div>
+                <h1>Elternbereich</h1>
+                <h2>Sicherheitseinstellungen</h2>
+                
+                <!-- PIN-Änderung Sektion -->
+                <div class="settings-section">
+                    <h3>🔐 PIN-Verwaltung</h3>
+                    <p>Ändern Sie Ihre Eltern-PIN für zusätzliche Sicherheit.</p>
+                    
+                    <div class="pin-input-container">
+                        <label for="pin-new">Neue 4-stellige PIN eingeben:</label>
+                        <input id="pin-new" type="password" maxlength="4" pattern="\d{4}" placeholder="••••">
+                    </div>
+                    
+                    <div class="error" id="pin-new-error"></div>
+                    <button class="parent-btn primary" id="pin-save">PIN speichern</button>
+                    <div class="success" id="success-msg"></div>
+                </div>
+
+                <!-- Whitelist-Verwaltung Sektion -->
+                <div class="settings-section">
+                    <h3>⭐ Whitelist verwalten</h3>
+                    <p>Fügen Sie vertrauenswürdige Websites hinzu, die automatisch zugelassen werden.</p>
+                    
+                    <div class="whitelist-input-container">
+                        <input id="whitelist-add" type="text" placeholder="z.B. www.kika.de oder https://www.kindernetz.de">
+                        <button class="parent-btn secondary" id="whitelist-add-btn">Hinzufügen</button>
+                    </div>
+                    
+                    <div class="error" id="whitelist-error"></div>
+                    
+                    <div class="whitelist-list-container">
+                        <ul class="whitelist-list" id="whitelist-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Info-Bereich -->
+                <div class="parent-info">
+                    <p><strong>Hinweis:</strong> Websites auf der Whitelist umgehen den FragFinn-Filter. Fügen Sie nur vertrauenswürdige, kinderfreundliche Websites hinzu.</p>
+                </div>
             </div>
         </div>
     </div>

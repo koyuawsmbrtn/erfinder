@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Erfinder - Erstkonfiguration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles/first-run-wizard.css">
+</head>
+<body>
+    <div class="wizard-container">
+        <!-- Step Indicator -->
+        <div class="step-indicator" id="step-indicator">Schritt 1 von 4</div>
+        
+        <!-- Schritt 1: Willkommen -->
+        <div id="step-welcome" class="wizard-step active">
+            <div class="wizard-content">
+                <div class="wizard-icon">🛡️</div>
+                <h1>Willkommen bei Erfinder!</h1>
+                <h2>Kinderfreundlich und sicher</h2>
+                <p>Erfinder ist ein spezieller Browser für Kinder, der automatisch gefährliche oder ungeeignete Inhalte blockiert.</p>
+                <div class="feature-list">
+                    <div class="feature">
+                        <span class="feature-icon">🔍</span>
+                        <span class="feature-text">Automatische Inhaltsprüfung mit FragFinn</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔒</span>
+                        <span class="feature-text">Eltern-PIN für Sicherheitseinstellungen</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">⭐</span>
+                        <span class="feature-text">Whitelist für vertrauenswürdige Websites</span>
+                    </div>
+                </div>
+                <button class="wizard-btn primary" onclick="nextStep()">Weiter zur Einrichtung</button>
+            </div>
+        </div>
+
+        <!-- Schritt 2: PIN-Einrichtung -->
+        <div id="step-pin-setup" class="wizard-step">
+            <div class="wizard-content">
+                <div class="wizard-icon">🔐</div>
+                <h2>Eltern-PIN einrichten</h2>
+                <p>Bitte wählen Sie eine 4-stellige PIN für den Elternbereich. Diese PIN wird benötigt, um Sicherheitseinstellungen zu ändern und Websites zur Whitelist hinzuzufügen.</p>
+                
+                <div class="pin-input-container">
+                    <label for="new-pin">Neue PIN eingeben:</label>
+                    <input id="new-pin" type="password" maxlength="4" pattern="\d{4}" placeholder="0000" autofocus>
+                </div>
+                
+                <div class="pin-input-container">
+                    <label for="confirm-pin">PIN bestätigen:</label>
+                    <input id="confirm-pin" type="password" maxlength="4" pattern="\d{4}" placeholder="0000">
+                </div>
+                
+                <div class="error" id="pin-error"></div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-btn secondary" onclick="previousStep()">Zurück</button>
+                    <button class="wizard-btn primary" onclick="savePinAndNext()">PIN speichern und weiter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schritt 3: Whitelist-Einrichtung (optional) -->
+        <div id="step-whitelist-setup" class="wizard-step">
+            <div class="wizard-content">
+                <div class="wizard-icon">⭐</div>
+                <h2>Vertrauenswürdige Websites hinzufügen</h2>
+                <p>Sie können optional bereits jetzt einige vertrauenswürdige Websites zur Whitelist hinzufügen. Diese werden automatisch zugelassen, auch wenn sie nicht bei FragFinn gelistet sind.</p>
+                
+                <div class="whitelist-input-container">
+                    <input id="whitelist-url" type="text" placeholder="z.B. www.kika.de oder https://www.kinder.de">
+                    <button id="add-whitelist-btn" onclick="addToInitialWhitelist()">Hinzufügen</button>
+                </div>
+                
+                <ul id="initial-whitelist" class="initial-whitelist"></ul>
+                <div class="error" id="whitelist-error"></div>
+                
+                <div class="wizard-info">
+                    <p><strong>Hinweis:</strong> Sie können jederzeit später weitere Websites zur Whitelist hinzufügen, indem Sie den Elternbereich öffnen.</p>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-btn secondary" onclick="previousStep()">Zurück</button>
+                    <button class="wizard-btn tertiary" onclick="skipWhitelistSetup()">Überspringen</button>
+                    <button class="wizard-btn primary" onclick="completeSetup()">Einrichtung abschließen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schritt 4: Abschluss -->
+        <div id="step-complete" class="wizard-step">
+            <div class="wizard-content">
+                <div class="wizard-icon">✅</div>
+                <h2>Einrichtung abgeschlossen!</h2>
+                <p>Erfinder ist jetzt einsatzbereit. Ihr Kind kann sicher im Internet surfen.</p>
+                
+                <div class="summary">
+                    <h3>Was wurde eingerichtet:</h3>
+                    <ul>
+                        <li>✅ Eltern-PIN wurde festgelegt</li>
+                        <li id="whitelist-summary">✅ Whitelist wurde konfiguriert</li>
+                        <li>✅ Automatische Inhaltsprüfung ist aktiviert</li>
+                    </ul>
+                </div>
+                
+                <div class="wizard-info">
+                    <p><strong>Zugriff auf Elternbereich:</strong> Klicken Sie auf das 🔒 Symbol in der oberen rechten Ecke des Browsers.</p>
+                    <p><strong>Whitelist erweitern:</strong> Wenn eine blockierte Website sicher ist, können Sie sie über den Elternbereich zur Whitelist hinzufügen.</p>
+                </div>
+                
+                <button class="wizard-btn primary large" onclick="startBrowser()">Browser starten</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/js/first-run-wizard.js"></script>
+</body>
+</html>

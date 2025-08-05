@@ -1,4 +1,4 @@
-/* Erfinder - Parent Area Styles - Matching First Run Wizard Design */
+/* Erfinder - First Run Wizard Styles */
 
 * {
     box-sizing: border-box;
@@ -14,29 +14,28 @@ body {
     align-items: center;
     justify-content: center;
     color: #333;
-    padding: 20px;
 }
 
-.parent-container {
+.wizard-container {
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 700px;
-    min-height: 600px;
+    width: 90%;
+    max-width: 600px;
+    min-height: 500px;
     overflow: hidden;
     position: relative;
 }
 
-.parent-step {
+.wizard-step {
     display: none;
     padding: 60px 40px 40px;
     text-align: center;
-    min-height: 600px;
+    min-height: 500px;
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.parent-step.active {
+.wizard-step.active {
     display: block;
 }
 
@@ -45,17 +44,15 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.parent-content {
+.wizard-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: 100%;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
-.parent-icon {
+.wizard-icon {
     font-size: 4rem;
     margin-bottom: 20px;
     animation: bounce 2s infinite;
@@ -86,7 +83,6 @@ h3 {
     font-size: 1.3rem;
     margin-bottom: 15px;
     font-weight: 600;
-    text-align: left;
 }
 
 p {
@@ -95,6 +91,36 @@ p {
     line-height: 1.6;
     margin-bottom: 30px;
     max-width: 500px;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #4A90E2;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    color: #555;
+    font-weight: 500;
+    text-align: left;
 }
 
 /* PIN Input Styles */
@@ -129,29 +155,13 @@ p {
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-/* Settings Sections */
-.settings-section {
-    background: #f8f9fa;
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 30px;
-    width: 100%;
-    text-align: left;
-    border-left: 4px solid #4A90E2;
-}
-
-.settings-section p {
-    margin-bottom: 20px;
-    color: #666;
-    font-size: 1rem;
-}
-
 /* Whitelist Input Styles */
 .whitelist-input-container {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
     width: 100%;
+    max-width: 500px;
 }
 
 .whitelist-input-container input {
@@ -169,63 +179,56 @@ p {
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-/* Whitelist List */
-.whitelist-list-container {
-    max-height: 200px;
-    overflow-y: auto;
+.whitelist-input-container button {
+    padding: 12px 20px;
+    background: #4A90E2;
+    color: white;
+    border: none;
     border-radius: 10px;
-    border: 1px solid #e1e5e9;
-    background: white;
-    min-height: 60px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.whitelist-list {
+.whitelist-input-container button:hover {
+    background: #357ABD;
+}
+
+.initial-whitelist {
     list-style: none;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
 }
 
-.whitelist-list li {
+.initial-whitelist li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 15px;
+    background: #f0f7ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    margin-bottom: 8px;
     color: #333;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
 }
 
-.whitelist-list li:last-child {
-    border-bottom: none;
-}
-
-.whitelist-list li:hover {
-    background: #f8f9fa;
-}
-
-.whitelist-list li button {
+.initial-whitelist li button {
     background: #ff6b6b;
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
+    border-radius: 5px;
+    padding: 5px 10px;
     cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    margin-left: 10px;
+    font-size: 0.9rem;
 }
 
-.whitelist-list li button:hover {
+.initial-whitelist li button:hover {
     background: #ff5252;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
 }
 
 /* Button Styles */
-.parent-btn {
+.wizard-btn {
     padding: 15px 30px;
     border: none;
     border-radius: 12px;
@@ -237,32 +240,49 @@ p {
     min-width: 120px;
 }
 
-.parent-btn.primary {
+.wizard-btn.primary {
     background: #4A90E2;
     color: white;
 }
 
-.parent-btn.primary:hover {
+.wizard-btn.primary:hover {
     background: #357ABD;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
 }
 
-.parent-btn.secondary {
+.wizard-btn.secondary {
     background: #6c757d;
     color: white;
 }
 
-.parent-btn.secondary:hover {
+.wizard-btn.secondary:hover {
     background: #5a6268;
     transform: translateY(-2px);
 }
 
-.parent-btn:disabled {
-    background: #bbb;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+.wizard-btn.tertiary {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #e1e5e9;
+}
+
+.wizard-btn.tertiary:hover {
+    background: #e9ecef;
+    border-color: #6c757d;
+}
+
+.wizard-btn.large {
+    padding: 20px 40px;
+    font-size: 1.3rem;
+}
+
+.wizard-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Error Styles */
@@ -275,59 +295,63 @@ p {
     border: 1px solid #f5c6cb;
     border-radius: 8px;
     display: none;
-    font-size: 0.95rem;
 }
 
 .error.show {
     display: block;
 }
 
-.error:not(:empty) {
-    display: block;
-}
-
-/* Success Styles */
-.success {
-    color: #155724;
-    font-weight: 600;
-    margin: 10px 0;
-    padding: 10px;
-    background: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 8px;
-    display: none;
-    font-size: 0.95rem;
-}
-
-.success:not(:empty) {
-    display: block;
-}
-
 /* Info Box */
-.parent-info {
+.wizard-info {
     background: #e7f3ff;
     border-left: 4px solid #4A90E2;
     padding: 15px;
     margin: 20px 0;
     border-radius: 8px;
     text-align: left;
-    width: 100%;
+    max-width: 500px;
 }
 
-.parent-info p {
-    margin-bottom: 0;
+.wizard-info p {
+    margin-bottom: 10px;
     color: #555;
     font-size: 0.95rem;
 }
 
+.wizard-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Summary */
+.summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+    max-width: 500px;
+}
+
+.summary ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.summary li {
+    color: #28a745;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .parent-container {
+    .wizard-container {
         width: 95%;
-        margin: 10px;
+        margin: 20px;
     }
     
-    .parent-step {
+    .wizard-step {
         padding: 40px 20px 20px;
     }
     
@@ -339,45 +363,33 @@ p {
         font-size: 1.5rem;
     }
     
-    .parent-icon {
+    .wizard-icon {
         font-size: 3rem;
     }
     
-    .settings-section {
-        padding: 20px;
-    }
-    
-    .whitelist-input-container {
+    .wizard-buttons {
         flex-direction: column;
+        align-items: center;
     }
     
-    .parent-btn {
+    .wizard-btn {
         width: 100%;
         max-width: 250px;
     }
 }
 
 /* Loading animation for step transitions */
-.parent-step.loading {
+.wizard-step.loading {
     pointer-events: none;
     opacity: 0.7;
 }
 
-/* Scrollbar styling for whitelist */
-.whitelist-list-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.whitelist-list-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.whitelist-list-container::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
-}
-
-.whitelist-list-container::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+/* Step indicator (optional) */
+.step-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #999;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
